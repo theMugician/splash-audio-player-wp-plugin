@@ -1,0 +1,34 @@
+.splash-field {
+    margin: 16px auto;
+}
+
+.splash-field--text {
+    display: flex;
+    flex-direction: column;
+}
+
+.splash-field__label {
+    margin-top: 0;
+    margin-bottom: 0;
+    cursor: default;
+}
+
+.splash-field__input {
+    margin-top: 10px;
+    max-width: 300px;
+}
+
+.splash-field__radio-group {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+input[type=radio].splash-field__radio-button {
+    line-height: 1;
+    margin: 0 12px 0 6px;
+}
+
+.splash-field__description {
+    margin-top: 10px;
+}

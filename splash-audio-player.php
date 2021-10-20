@@ -23,20 +23,18 @@ if ( ! class_exists( 'SplashAudioPlayer' ) ) {
         // Constructor
         public function __construct() {
             add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+            add_action( 'admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
             require plugin_dir_path(__FILE__) . 'admin/splash-audio-player-post-type.php';
             require plugin_dir_path(__FILE__) . 'admin/splash-audio-player-meta-box.php';
         }
 
-        public function filepath() {
-
+        public function enqueue_admin_scripts() {
+            wp_enqueue_style( 'splash-fields-css', plugins_url( 'admin/css/splash-fields.css', __FILE__ ), null, '');
         }
 
         // Styles and Scripts
         public function enqueue_scripts() {
-            // Styles
             wp_enqueue_style( 'splash-audio-player-css', plugins_url( 'public/assets/splash-audio-player.css', __FILE__ ), null, '');
-
-            // Scripts
             wp_enqueue_script( 'splash-audio-player-js', plugins_url( 'public/assets/splash-audio-player.js', __FILE__ ), array(), '', true );
         }
 

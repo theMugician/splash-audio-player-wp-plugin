@@ -40,6 +40,13 @@ class SplashMetaBox
     protected $title;
 
     /**
+     * Screens where this meta box will appear.
+     *
+     * @var string[]
+     */
+    protected $fields;
+
+    /**
      * Constructor.
      *
      * @param string   $id
@@ -58,7 +65,8 @@ class SplashMetaBox
 
         $this->id = $id;
         $this->title = $title;
-        $this->template = rtrim($template, '/');
+        //$this->template = rtrim($template, '/');
+        $this->template = $template;
         $this->context = $context;
         $this->priority = $priority;
         $this->screens = $screens;
@@ -74,10 +82,13 @@ class SplashMetaBox
 	 * @return void
 	 */
 	public function render( ) {
-		if( ! isset( $this->template ) ) {
+        wp_nonce_field( 'metabox_' . $this->id, 'metabox_' . $this->id . '_nonce' );
+    	if( ! isset( $this->template ) || $this->template === null ) {
 			echo '<p>' . __( 'There are no settings on this page.', 'textdomain' ) . '</p>';
 			return;
 		}
+        //var_dump($this->template);
+        //die();
         include $this->template;
 	}
     
@@ -97,16 +108,19 @@ class SplashMetaBox
      */
 	public function save_meta_settings( $post_id ) {
 	
+        
 		// Check if our nonce is set.
 		if ( ! isset( $_POST['metabox_' . $this->id  . '_nonce'] ) ) {
+
 			return $post_id;
 		}
 		
+
 		$nonce = $_POST['metabox_' . $this->id  . '_nonce'];
 		
 		// Verify that the nonce is valid.
 		if ( ! wp_verify_nonce( $nonce, 'metabox_' . $this->id  ) ) {
-			return $post_id;
+            echo('passed validation');
 		}
 		
 		/*
@@ -128,25 +142,14 @@ class SplashMetaBox
 			}
 		}
 	    
-		$this->post_id = $post_id;
+        foreach ( $this->fields as $field ) {
 
-        foreach ( $this->$fields as $field ) {
             if ( array_key_exists( $field, $_POST ) ) {
-                update_post_meta( $this->post_id, $field, sanitize_text_field( $_POST[$field] ) );
+                update_post_meta( $post_id, $field, sanitize_text_field( $_POST[$field] ) );
             }
-        }	
-		//$this->save_settings();
+            
+        }
+
 	}
 
-	 /**
-	 * Save settings from POST
-	 * @return [type] [description]
-	 */
-	// public function save_settings(){
-    //     foreach ( $fields as $field ) {
-    //         if ( array_key_exists( $field, $_POST ) ) {
-    //             update_post_meta( $post_id, $field, sanitize_text_field( $_POST[$field] ) );
-    //         }
-    //     }	
-    // } 
 }

@@ -1,6 +1,6 @@
 <?php
 
-require plugin_dir_path(__FILE__) . '../includes/SplashMetABox.php';
+require plugin_dir_path(__FILE__) . '../includes/SplashMetaBox.php';
 
 /**
  * Register meta box for the Splash Audio Player Post Type
@@ -16,10 +16,10 @@ require plugin_dir_path(__FILE__) . '../includes/SplashMetABox.php';
 
 $id = 'splash_audio_player_settings';
 $title = 'Audio Player Settings';
-$template = null;
+$template = plugin_dir_path(__FILE__) . 'splash-audio-player-fields.php';
 $context = 'advanced';
 $priority = 'default';
-$screens = array('slash_audio_player');
-$fields = array();
+$screens = array();
+$fields = array('splash_audio_player_volume_toggle','splash_audio_player_mute_toggle');
 
-$splash_audio_player_meta_box = new SplashMetaBox($id, $title, $template, $context = 'advanced', $priority = 'default', $screens = array(), $fields = array());
+$splash_audio_player_meta_box = new SplashMetaBox($id, $title, $template, $context, $priority, $screens, $fields);
