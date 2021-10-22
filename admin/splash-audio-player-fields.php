@@ -1,31 +1,55 @@
 <?php
 
-require plugin_dir_path(__FILE__) . '../includes/SplashFields.php';
+require plugin_dir_path(__FILE__) . '../includes/class-splash-fields.php';
 
 /**
  * Render text field
- * @var  string $name
+ * @var  string $id
  * @var  string $title
- * @var  string $type
- * @var  string $placeholder
- * @var  string $desc
+ * @var  array  $options *Optional
  * 
  */
-$fields = new SplashFields();
-$fields->text('splash_audio_player_volume_toggle', 'Volume Toggle', 'text');
+$fields = new Splash_Fields();
+
+$fields->text('splash_audio_player_text', 'Audio Player Text');
 
 /**
  * Render radio button group
- * @var  string $name
+ * @var  string $id
  * @var  string $title
- * @var  string $type - should always be 'radio'
- * @var  string $desc
- * @var  array  $options[['id', 'title', 'value']]
+ * @var  array  $options *Required Custom options
  * 
  */
 
+$radio_options_id = 'splash_audio_player_mute_toggle';
 $radio_options = array(
-    array( 'mute_toggle_no', 'No', 'mute_toggle_no' ),
-    array( 'mute_toggle_yes', 'Yes', 'mute_toggle_yes' )
+    'name' => 'splash_audio_player_mute_toggle',
+    'value' => esc_attr( get_post_meta( get_the_ID(), $radio_options_id, true )),
+    'description' => '',
+    'radio_buttons' => array(
+        array(
+            'id' => 'mute_toggle_no',
+            'title' => 'No',
+            'name' => 'mute_toggle_no',
+            'value' => 'mute_toggle_no'
+        ),
+        array(
+            'id' => 'mute_toggle_yes',
+            'title' => 'Yes',
+            'name' => 'mute_toggle_yes',
+            'value' => 'mute_toggle_yes'
+        )       
+    )
 );
-$fields->radio('splash_audio_player_mute_toggle', 'Mute Toggle', 'radio', '', $radio_options);
+$fields->radio('splash_audio_player_mute_toggle', 'Mute Toggle', $radio_options);
+
+/**
+ * Render checkbox
+ * @var  string $id
+ * @var  string $title
+ * @var  array  $options *Required Custom options
+ * 
+ */
+
+$fields->checkbox('splash_audio_player_autoplay', 'Autoplay');
+
